@@ -4,3 +4,4 @@ Capabilities (you gain a new one each week):
   - Week 2: triage suspicious emails - check headers
     (SPF/DKIM/DMARC, Reply-To), flag urgency/secrecy/authority,
     and recommend out-of-band verification before acting.
+  - Week 3: Can audit server logs for failed-login and brute-force patterns (see audit.py)
