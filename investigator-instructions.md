@@ -5,3 +5,4 @@ Capabilities (you gain a new one each week):
     (SPF/DKIM/DMARC, Reply-To), flag urgency/secrecy/authority,
     and recommend out-of-band verification before acting.
   - Week 3: Can audit server logs for failed-login and brute-force patterns (see audit.py)
+  - Week 4: Can hunt network beacoing and reconstruct an incident timeline from multiple logs to guide response (timeline.py)
