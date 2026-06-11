@@ -1,0 +1,37 @@
+name: Auto-Triage
+on:
+  push:
+    paths:
+      - 'evidence/**'        # only fires when you add evidence
+
+permissions:
+  contents: write           # lets the Action commit the report back
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install Ollama
+        run: curl -fsSL https://ollama.com/install.sh | sh
+      - name: Start Ollama and pull the model
+        run: |
+          ollama serve &
+          sleep 10
+          ollama pull llama3.2:3b
+      - name: Run triage
+        env:
+          TRIAGE_MODEL: llama3.2:3b   # match the model pulled above (script default is 1b)
+        run: |
+          pip install ollama
+          python triage.py
+      - name: Commit the report
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add reports/
+          git commit -m "Auto-triage report" || echo "Nothing to commit"
+          git push
