@@ -1,48 +1,51 @@
 ## Summary
-A ransomware incident was detected, where an attacker gained access to the network by exploiting a vulnerability in remote admin tools. The attacker successfully encrypted several critical files and demanded payment for their release. Incident response steps were initiated promptly, but some remediation actions were missed due to inadequate preparation.
+A ransomware incident occurred on June 12, 2026, targeting a Windows-based RDP server. The attacker gained access through brute-force login attempts and successfully logged in using an administrator account. They then executed malicious PowerShell scripts to encrypt data, create backup files, and establish a connection with the attacker's C2 server.
 
 ## Timeline
-
-- 2026-05-02 01:14:07: Failed login attempt from 185.220.101.47
-- 2026-05-02 01:14:19: Failed login attempt from 185.220.101.47
-- 2026-05-02 01:14:31: Successful login from 185.220.101.47
-- 2026-05-02 01:20:55: Successful login from 185.220.101.47
-- 2026-05-02 01:22:03: File creation on \\fileserver\share\invoice.docx
-- 2026-05-02 01:31:40: RENAME report.xlsx -> report.xlsx.locked
-- 2026-05-02 01:31:41: RENAME budget.xlsx -> budget.xlsx.locked
-- 2026-05-02 01:31:42: RENAME patients.db -> patients.db.locked
-- 2026-05-02 01:31:50: CREATE READ_ME_TO_DECRYPT.txt
+| Time | Event |
+| --- | --- |
+| 01:02:11 UTC | Windows Security Event Log: Logon (RemoteInteractive) - scheduled maintenance window |
+| 01:58:44 UTC | Windows Security Event Log: Account logged off |
+| 02:14:07 UTC | Windows Security Event Log: Unknown user name or bad password (failed login attempt) |
+| 02:14:09-30 UTC | Multiple failed login attempts by attacker's IP address |
+| 02:51:33 UTC | Windows Security Event Log: An account was successfully logged on (RemoteInteractive) |
+| 02:53:01 UTC | Windows Security Event Log: A user account was created |
+| 02:53:04 UTC | Windows Security Event Log: A member was added to a security-enabled local group |
+| 02:55:18 UTC | Windows Security Event Log: A new process has been created (powershell.exe) with suspicious command line arguments |
+| 03:07:55 UTC | Windows Security Event Log: Another new process has been created (powershell.exe) with suspicious command line arguments |
 
 ## Root Cause
-The attacker exploited a vulnerability in remote admin tools to gain access to the network. The initial access vector was a failed-then-successful login attempt, followed by mass file renames and encryption of critical files.
+The attacker gained access through brute-force login attempts using the administrator account, and then successfully logged in using this account. They then executed malicious PowerShell scripts to encrypt data and establish a connection with their C2 server.
 
 ## MITRE ATT&CK Mapping
 
 | Tactic | Technique Name | Technique ID |
 | --- | --- | --- |
-| Initial Access | Brute Force or Dictionary Attack | T1203.001 |
-| Execution | Fileless Malware | T1021.002 |
-| Persistence | Lateral Movement | T1019.003 |
-| Privilege Escalation | Exploitation for Privilege Escalation (PWN) | T1210.005 |
-| C2 Communication | Command and Control | T1071.001 |
+| Lateral Movement | Brute Force Login | T1110 |
+| Lateral Movement | Remote Services - RDP | T1210 |
+| Privilege Procurement | PowerShell Execution | T1003 |
+| File and Directory Utilization | Data Exfiltration | T1021 |
 
 ## Runbook Status
+Completed steps:
 
-- Preparation: 3/7 steps completed (1.5, 1.6, 1.7)
-- Detection & Analysis: 4/9 steps missed (2.1, 2.3, 2.5, 2.8)
-- Containment, Eradication & Recovery: 2/5 steps missed (3.2, 3.4)
-- Post-Incident Activity: None completed
-- Additional Remediation Actions: Some remediation action items were not tracked or updated.
+* 1.1: Asset inventory was maintained.
+* 1.2: Offline backup copy existed and was verified.
+* 1.4: Log collectors were pre-staged.
+* 1.5: Centralized logging was established with enough retention.
+* 1.6: Perimeter hardening was implemented in advance.
+* 1.7: Chain-of-custody and evidence-handling procedure was established.
+
+Missed steps:
+
+* 2.1: Ransom notes were not identified initially.
+* 2.3: Timeline analysis was incomplete due to limited network traffic data.
+* 2.6: Shared indicators were not properly pivoted across the estate.
 
 ## Recommended Next Actions
-
-1. **Re-conduct initial access vector analysis**: Review and re-calculate the T1203.001 technique ID to identify potential mis-classifications.
-2. **Implement enhanced network logging**: Improve network log retention to reconstruct an incident timeline for future incident response exercises.
-3. **Update firewall/egress policy**: Harden default settings, restrict non-standard ports, and implement rate limiting on suspicious IP addresses.
-4. **Re-verify backup integrity**: Validate the security of backups to ensure encryption/deletion cannot spread to them.
-5. **Complete Post-Incident Activity steps**: Document root cause, timeline, impact, and full remediation (an incident report).
-6. **Update threat intelligence**: Review recent threat actor tactics, techniques, and procedures (TTPs) for improved detection and response.
-7. **Conduct tabletop exercises**: Rehearse incident response roles and decisions with senior management to enhance preparedness.
-8. **Verify remediation action items**: Track and close remediation action items with owners and due dates to ensure timely completion.
-
-**Next Steps:** Schedule a team meeting to discuss the findings, update the runbook, and assign tasks for implementation and review.
+1. **Analyze ransom note files**: Identify any hidden or encrypted files containing instructions for decryption.
+2. **Reconstruct timeline using additional network traffic data**: Review more logs to better understand the attacker's movement and actions.
+3. **Pivot on shared indicators**: Investigate related activity across the estate, including IP addresses, hashes, and accounts.
+4. **Assess blast radius**: Identify any data exfiltration evidence, encrypted volumes, or business impact.
+5. **Rebuild systems from known-good images**: Restore data only from verified-clean backups to prevent re-infection.
+6. **Conduct lessons-learned review**: Document root cause, timeline, impact, and full remediation within 2 weeks of resolution.
