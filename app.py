@@ -54,7 +54,7 @@ def ask_groq(messages):
         return f"⚠️ Groq request failed: {e}"
 
 
-st.set_page_config(page_title="The Investigator — SOC Copilot", page_icon="🕵️")
+st.set_page_config(page_title="The Investigator v1.1— SOC Copilot", page_icon="🕵️")
 st.title("🕵️ The Investigator — SOC Copilot")
 
 tab1, tab2, tab3 = st.tabs(
