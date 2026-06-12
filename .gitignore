@@ -1,0 +1,11 @@
+# Streamlit secrets - never commit API keys
+.streamlit/secrets.toml
+
+# Instructor lab guide - keep out of the student repo
+lab6.html
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
