@@ -1,7 +1,19 @@
 # The Investigator
  
 An AI-powered security & network analyst I'm building across 8 weeks.
- 
+
+## Live app
+
+**▶ Try it: https://aisocinvestigator.streamlit.app/**
+
+What it does:
+- **Correlate & Triage** — upload multiple log sources (firewall, Sysmon, Windows, Suricata) and get one correlated incident report.
+- **MITRE ATT&CK mapping** — each finding tagged with tactic, technique name, and technique ID.
+- **Severity + plans** — a Low/Medium/High/Critical score with justification, plus investigation and response plans.
+- **Download report** — save any analysis as a timestamped Markdown file.
+- **Ask the Investigator** — a chat box for follow-up SOC questions.
+- **Case Files** — browse past reports saved in `reports/`.
+
 ## Skills so far
 - Week 1: Thinks like a security analyst (prompt library)
 - Week 2: Can triage suspicious emails — check headers (SPF/DKIM/DMARC, Reply-To), flag urgency/secrecy/authority, recommend out-of-band verification

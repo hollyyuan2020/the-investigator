@@ -8,3 +8,12 @@ Capabilities (you gain a new one each week):
   - Week 4: Can hunt network beaconing and reconstruct an incident timeline from multiple logs to guide response (timeline.py)
   - Week 5: Runs an automated triage pipeline (GitHub Actions + a local Llama 3.2 model via Ollama) that reads the IR runbook, maps findings to MITRE ATT&CK, and writes a verified incident report.
   - Week 6: A Streamlit SOC Copilot that correlates four telemetry sources (firewall, Sysmon, Windows, Suricata) via Groq and returns a triaged report with MITRE mapping, severity, and response plan (app.py).
+
+Live app: https://aisocinvestigator.streamlit.app/
+What it does:
+  - Correlate & Triage: upload multiple logs -> one correlated incident report.
+  - MITRE ATT&CK mapping: tactic, technique name, and technique ID per finding.
+  - Severity (Low/Medium/High/Critical) with justification, plus investigation and response plans.
+  - Download any report as a timestamped Markdown file.
+  - Ask the Investigator: chat box for follow-up SOC questions.
+  - Case Files: browse past reports saved in reports/.
